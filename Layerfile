@@ -1,0 +1,23 @@
+#This is an example webapp.io configuration for rails!
+FROM vm/rails:2.7.1
+
+# To note: Layerfiles create entire VMs, *not* containers!
+
+
+ENV RAILS_ENV=development
+
+RUN ls
+
+# Copy your rails app into the runner
+COPY . .
+
+RUN ls
+
+# run migrations
+RUN bundle install
+RUN bundle exec rake db:migrate
+RUN bundle exec rake db:setup
+
+# Start the server
+RUN BACKGROUND rails server --binding 0.0.0.0
+EXPOSE WEBSITE localhost:3000
